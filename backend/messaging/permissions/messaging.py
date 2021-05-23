@@ -19,7 +19,6 @@ def user_is_banned(ip: str) -> bool:
     Возвращает True в том числе, если IP у юзера не назначен
     '''
     user = User.objects.filter(ip=ip).first()
-    print("HERE LOOK AT IP", ip)
     if user is not None:
         if not user.is_active:
             if timezone.datetime.now() - user.banned_at > timedelta(minutes=10):
