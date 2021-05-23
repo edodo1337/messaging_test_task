@@ -1,0 +1,10 @@
+/venv
+.env
+/postgresql
+/public
+__pycache__/
+**/__pycache__
+*.log
+.cache
+.vscode/
+*.pyc
