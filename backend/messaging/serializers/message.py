@@ -22,7 +22,7 @@ class MessageCreateSerializer(serializers.ModelSerializer):
         model = Message
         fields = ('title', 'body',)
     
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> Message:
         ip = self.context.get('ip', None)
 
         user = None
@@ -36,8 +36,11 @@ class MessageCreateSerializer(serializers.ModelSerializer):
         instance: Message = super().create(validated_data)
         instance.user = user
         instance.save()
+        try:
+            send_message.apply_async(args=(instance.pk,))
+        except Exception as e:
+            pass
 
-        send_message.apply_async(args=(instance.pk,))
         return instance
 
 class MessageUpdateSerializer(serializers.ModelSerializer):
