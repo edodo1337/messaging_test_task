@@ -1,10 +1,8 @@
 from celery.utils.imports import instantiate
-from app.celery import app
-from django.http import HttpResponse
-import csv 
+from app.celery import celery_app
 
 
-@app.task
+@celery_app.task
 def send_message(message_pk: int):
     from messaging.models.message import Message
 

@@ -41,20 +41,25 @@ services:
       - postgres
       - redis
       # - rabbitmq
+    links:
+      - "redis:redis"
     volumes:
       - ./public:/code/public
   
 
-  # celery:
-  #   build: .
-  #   env_file:
-  #   - .env
-  #   command: celery -A app worker --loglevel=info -B
-  #   restart: always
-  #   depends_on:
-  #   - postgres
-  #   - redis
-  #   - rabbitmq
-  #   - web
-  #   volumes:
-  #   - ./public:/code/public
+  celery:
+    build: .
+    env_file:
+    - .env
+    command: celery -A app worker --loglevel=info -B
+    restart: always
+    depends_on:
+    - postgres
+    - redis
+    # - rabbitmq
+    - web
+    links:
+      - "web:web"
+
+    volumes:
+    - ./public:/code/public
